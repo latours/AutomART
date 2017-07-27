@@ -13,7 +13,7 @@ CONTENTS OF THIS FILE
 
 INTRODUCTION TO AUTO mART
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-AutomART works to automate the process of filtering steps for remote homologues of known mono-ADP-ribosylating toxins. Currently, Auto mART utilizes "SignalP", "TMHMM" and "OB-score" to iterate through a directory containing several FASTA files of remote mART homologue sequences. AutomART then outputs a list of putative mART toxins for further analysis and their corresponding sequences in a FASTA file format. 
+AutomART automates the filtering process for detecting new putative mono-ADP-ribosylating toxins. AutomART filters sequences of remote homologues of known mARTs. Currently, Auto mART utilizes "SignalP", "TMHMM" and "OB-score" to iterate through a directory containing several FASTA files of remote mART homologue sequences. AutomART then outputs a list of putative mART toxins for further analysis and their corresponding sequences in a FASTA file format. 
 
 DEPENDANCIES (PRE-INSTALLATION)
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

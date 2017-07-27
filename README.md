@@ -7,7 +7,7 @@ CONTENTS OF THIS FILE
 - Dependencies (Pre-installation)
 - Installation
 - Configuration
-- Running Auto mART
+- Running AutomART
 - Interpreting the results 
 - Acknowledgments/Contact Info
 
@@ -47,7 +47,7 @@ CONFIGURATION
 3) Change "/full/directory_path/OB to the path to OB-score's directory (Not the command itself).
 4) Save respective changes
 
-RUNNING AUTO mART 
+RUNNING AUTOmART 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 *COMMAND OVERVIEW:
 sh automart.sh -1 -2
@@ -67,7 +67,7 @@ Command line example: /home/user/OUTPUT_files (Do not add a "/" at the end of th
 NOTE: Please ensure the output directory exists before attempting to run Auto mART.
 Make directory example: mkdir OUTPUT_files 
 
-*EXAMPLE COMMAND FOR AUTO mART:
+*EXAMPLE COMMAND FOR AUTOmART:
 
 sh automart.sh /home/user/FASTA_files/ /home/user/OUTPUT_files/
 

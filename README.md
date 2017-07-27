@@ -27,7 +27,9 @@ DEPENDANCIES (PRE-INSTALLATION)
 	- TMHMM is available for download for free for academic users from: http://www.cbs.dtu.dk/cgi-bin/nph-sw_request?tmhmm
 	- Please follow TMHMM README for installation instructions
 *OB-score 
-- OB-score is available for download for free for academic users from: http://www.compbio.dundee.ac.uk/obscore/OB_1.0.tar.gz
+	- OB-score is available for download for free for academic users from:
+	http://www.compbio.dundee.ac.uk/obscore/OB_1.0.tar.gz
+	
 	- Please follow OB-score README for installation instructions
 
 INSTALLATION

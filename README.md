@@ -36,10 +36,10 @@ INSTALLATION
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 Local Installation 
 1) Git Hub
-	a) git clone https://github.com/latours/AutomART.git
+- git clone https://github.com/latours/AutomART.git
 
 2) Download Zip File
-	a) 
+- 
 
 
 CONFIGURATION
@@ -79,18 +79,18 @@ AutomART OUTPUT FORMAT
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 Directories Produced:
 1) GramPositive_Output
-	a) Description: This directory will contain all fasta and output files pertaining to tests conducted for gram positive organisms
-	b) Files Produced:
+- Description: This directory will contain all fasta and output files pertaining to tests conducted for gram positive organisms
+- Files Produced:
 2) GramNegative_Output
-	a) Description: This directory will contain all fasta and output files pertaining to tests conducted for gram positive organisms
-	b) Files Produced:
+- Description: This directory will contain all fasta and output files pertaining to tests conducted for gram positive organisms
+- Files Produced:
 3) Secreted
-	a) Description: Each GramPositive/GramNegative Output directory contains a secreted subdirectory which holds the output files for all secreted (classical pathway) IDs as determined by the 		program SignalP
-	b) Files Produced:
+- Description: Each GramPositive/GramNegative Output directory contains a secreted subdirectory which holds the output files for all secreted (classical pathway) IDs as determined by the 		program SignalP
+- Files Produced:
 4) Not_Secreted
-	a)Description:Each GramPositive/GramNegative Output directory contains a non secreted subdirectory. This directory will contain a list of IDs that are not classically secreted as
+- Description:Each GramPositive/GramNegative Output directory contains a non secreted subdirectory. This directory will contain a list of IDs that are not classically secreted as
 	determined by the program SignalP. The output is also provided for user interpretation.
-	b) Files Produced:
+- Files Produced:
 5) Final_IDs
 	a) Description: Within each of the Secreted/Not_Secreted directories will be a subdirectory called Final IDs which will contain the final ID list of organisms and the corresponding sequences.
 	b) Files Produced:

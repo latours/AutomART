@@ -34,8 +34,10 @@ INSTALLATION
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 Local Installation 
 1) Git Hub
+	a) git clone https://github.com/latours/AutomART.git
 
-
+2) Download Zip File
+	a) 
 
 
 CONFIGURATION

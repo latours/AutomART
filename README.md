@@ -98,9 +98,12 @@ Final Output File:
 
 AKNOWLEDGMENTS/CONTACT INFO
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-Developed by: Sara Latour M.BINF University of Guelph
+Developed by: Sara Latour M.BINF Candidate University of Guelph
+
 Contact Information: saralatour@outlook.com
+
 Publish Date: August 15th 2017 (08/15/17)
+
 Acknowledgements:
 Thanks to my research advisors Dr. Dan Ashlock and Dr. Rod Merrill for their guidance in developing this script.
 Special thanks to Olivier Tremblay for his guidance as well

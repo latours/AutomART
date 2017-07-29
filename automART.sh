@@ -136,8 +136,8 @@ rm obscores.output
 #Create Final Fasta File#
 cd $outputdir/GramPositive_Output/Secreted/Final_IDs/
 grep -A1 -f pos_final_mART_IDs.txt $lineonefasta > $outputdir/GramPositive_Output/Secreted/Final_IDs/pos_final_mART_sequences.fasta
-
-
+#Create NCBI Links File:
+cat pos_final_mART_IDs.txt | while read line; do echo "https://www.ncbi.nlm.nih.gov/Structure/cdd/wrpsb.cgi?INPUT_TYPE=live&SEQUENCE=$line"; done > NCBI_pos_final_mART_links.txt
 
 ################################GRAM[-]TESTING##################################
 ################################################################################
@@ -180,7 +180,8 @@ rm obscores.output
 #Create Final Fasta File#
 cd $outputdir/GramNegative_Output/Secreted/Final_IDs/
 grep -A1 -f neg_final_mART_IDs.txt $lineonefasta > $outputdir/GramNegative_Output/Secreted/Final_IDs/neg_final_mART_sequences.fasta
-
+#Create NCBI Links File:
+cat neg_final_mART_IDs.txt | while read line; do echo "https://www.ncbi.nlm.nih.gov/Structure/cdd/wrpsb.cgi?INPUT_TYPE=live&SEQUENCE=$line"; done > NCBI_neg_final_mART_links.txt
 ################################################################################
 				#REMOVE TEMP FILES#
 ################################################################################

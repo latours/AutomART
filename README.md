@@ -79,18 +79,23 @@ Directories Produced:
 1) GramPositive_Output
 - Description: This directory will contain all fasta and output files pertaining to tests conducted for gram positive 	      organisms
 - Files Produced:
+
 2) GramNegative_Output
 - Description: This directory will contain all fasta and output files pertaining to tests conducted for gram positive organisms
 - Files Produced:
+
 3) Secreted
 - Description: Each GramPositive/GramNegative Output directory contains a secreted subdirectory which holds the output files for all secreted (classical pathway) IDs as determined by the program SignalP
 - Files Produced:
+
 4) Not_Secreted
 - Description:Each GramPositive/GramNegative Output directory contains a non secreted subdirectory. This directory 	   will contain a list of IDs that are not classically secreted as determined by the program SignalP. The output is also provided for user interpretation.
 - Files Produced:
+
 5) Final_IDs
 - Description: Within each of the Secreted/Not_Secreted directories will be a subdirectory called Final IDs which will contain the final ID list of organisms and the corresponding sequences.
 - Files Produced:
+
 
 Final Output File:
 1) Final_Report.txt

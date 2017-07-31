@@ -37,7 +37,7 @@ Local Installation
 - git clone https://github.com/latours/AutomART.git
 
 2) Download Zip File
-- 
+- wget https://github.com/latours/AutomART/archive/master.zip
 
 
 CONFIGURATION

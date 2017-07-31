@@ -1,3 +1,4 @@
+#!/bin/bash
 ###CREATOR: SARA LATOUR
 ###CONTACT: saralatour@outlook.com
 ###UPDATED:31/07/17
@@ -13,7 +14,6 @@ tmhmm=/home/latours/Documents/BINF6999/tmhmm-2.0c/bin/tmhmm
 ob=/home/latours/Documents/BINF6999/OB/
 
 
-##  grep '>' | wc -l
 
 ################################################################################
 #####             NOTHING BELOW THIS LINE SHOULD REQUIRE CHANGING:         #####
@@ -44,12 +44,14 @@ if [ $# -ne 2 ]
     echo "ERROR MESSAGE:\nPlease ensure that the full paths for the directories are provided to AutomART and in the correct order:\n(1) Directory of FASTA files \n(2) Output Directory\nNOTE: See README for a more detailed explanation on how to run AutomART"
 	exit 1
 fi
+
 echo "Checking if Input directory is valid..."
 if   [ -d "${inputdir}" ]
 then echo "✓"
 else echo "Input is not a valid directory... exiting AutomART now\n";
      exit 1
 fi
+
 echo "Checking if Output directory is valid..."
 if   [ -d "${outputdir}" ]
 then echo "✓\nRunning AutomART...\n"
@@ -110,9 +112,9 @@ do
 head -n2 "$file" | tail -n1 > Secreted/temp_"$file".output
 tail -n+2 "$file" | awk -F" " '{if ($10=="Y") print $1}' >> Secreted/secreted_IDs.output 
 tail -n+2 "$file" | awk -F" " '{if ($10=="N") print $1}' >> Not_Secreted/not_secreted_IDs.output #keep (All no from signal p = not secreted)
+done
 grampos_not_secreted=$(wc -l $outputdir/GramPositive_Output/Not_Secreted/not_secreted_IDs.output)
 rm Secreted/temp_"$file".output
-done
 sort Secreted/secreted_IDs.output | uniq > Secreted/pos_secreted_IDs.output
 grampos_secreted=$(wc -l $outputdir/GramPositive_Output/Secreted/pos_secreted_IDs.output)
 grep -A1 -f Secreted/pos_secreted_IDs.output $lineonefasta > Secreted/grampositive_secreted.fasta #grep for all the secreted IDs to find their corresponding fasta sequence and save to file with all gram positive and secreted sequences.
@@ -134,7 +136,6 @@ echo "Now running OB-Score for Gram Positive Secreted Sequences containing no Tr
 cp Secreted/Final_IDs/grampositive_secreted_TMHMM_IDS.fasta $ob
 cd $ob
 perl OB.pl -i grampositive_secreted_TMHMM_IDS.fasta -o obscores.output -n -p /home/latours/Documents/BINF6999/OB/Hydrophobicity_scores.dat -m /home/latours/Documents/BINF6999/OB/zmat.dat
-rm grampositive_secreted_TMHMM_IDS.fasta
 cp obscores.output $outputdir/GramPositive_Output/Secreted/Final_IDs/
 cd $outputdir/GramPositive_Output/Secreted/Final_IDs/
 awk '$2>=1.5' obscores.output | cut -f1  > pos_final_mART_IDs.txt
@@ -166,7 +167,7 @@ head -n2 "$file" | tail -n1 > Secreted/temp_"$file".output
 tail -n+2 "$file" | awk -F" " '{if ($10=="Y") print $1}' >> Secreted/secreted_IDs.output #keep (All yes from signal p = secreted)
 tail -n+2 "$file" | awk -F" " '{if ($10=="N") print $1}' >> Not_Secreted/not_secreted_IDs.output #keep (All no from signal p = not secreted)
 done
-gramneg_not_secreted=$(wc -l $outputdir/GramNegative_Output/Not_Secreted
+gramneg_not_secreted=$(wc -l $outputdir/GramNegative_Output/Not_Secreted/not_secreted_IDs.output)
 rm Secreted/temp_"$file".output
 sort Secreted/secreted_IDs.output | uniq > Secreted/neg_secreted_IDs.output
 gramneg_secreted=$(wc -l $outputdir/GramNegative_Output/Secreted/neg_secreted_IDs.output)
@@ -186,7 +187,6 @@ echo "Now running OB-Score for Gram Negative Secreted Sequences containing no Tr
 cp Secreted/Final_IDs/gramnegative_secreted_TMHMM_IDS.fasta $ob
 cd $ob
 perl OB.pl -i gramnegative_secreted_TMHMM_IDS.fasta -o obscores.output -n -p /home/latours/Documents/BINF6999/OB/Hydrophobicity_scores.dat -m /home/latours/Documents/BINF6999/OB/zmat.dat
-rm gramnegative_secreted_TMHMM_IDS.fasta
 cp obscores.output $outputdir/GramNegative_Output/Secreted/Final_IDs/
 cd $outputdir/GramNegative_Output/Secreted/Final_IDs/
 awk '$2>=1.5' obscores.output | cut -f1 > neg_final_mART_IDs.txt
@@ -216,8 +216,6 @@ rm -R TMHMM*/
 
 rm $outputdir/GramPositive_Output/Secreted/Final_IDs/grampositive_secreted_TMHMM_IDS.output
 rm $outputdir/GramNegative_Output/Secreted/Final_IDs/gramnegative_secreted_TMHMM_IDS.output
-rm $outputdir/GramPositive_Output/signalp_pos.short_out
-rm $outputdir/GramNegative_Output/signalp_neg.short_out
 rm $outputdir/GramPositive_Output/Secreted/grampositive_secreted.fasta
 rm $outputdir/GramNegative_Output/Secreted/gramnegative_secreted.fasta
 rm $outputdir/GramPositive_Output/Secreted/Final_IDs/TMHMM_grampositive_secreted.output 
@@ -226,8 +224,7 @@ rm $outputdir/GramPositive_Output/Secreted/Final_IDs/grampositive_secreted_TMHMM
 rm $outputdir/GramNegative_Output/Secreted/Final_IDs/gramnegative_secreted_TMHMM_IDS.fasta
 rm $outputdir/GramPositive_Output/Secreted/secreted_IDs.output
 rm $outputdir/GramNegative_Output/Secreted/secreted_IDs.output
-rm $outputdir/GramPositive_Output/Secreted/Final_IDs/grampositive_secreted_TMHMM_IDS.fasta
-rm $outputdir/GramNegative_Output/Secreted/Final_IDs/gramnegative_secreted_TMHMM_IDS.fasta
+
 
 
 ################################################################################
@@ -248,4 +245,16 @@ echo "Gram Negative # of Secreted IDs without TM Domains:$gramneg_tmhmm" >> Fina
 echo "Gram Positive # of Final IDs:$pos_finalcount" >> Final_Report.txt
 echo "\nGram Negative # of Final IDs:$neg_finalcount" >> Final_Report.txt
 
-echo "AutomART Complete!!!"
+cat << "EOF"
+
+  .-.-.   .-.-.   .-.-.   .-.-.   .-.-.   .-.-.   .-.-.   .-.-
+ / / \ \ / / \ \ / / \ \ / / \ \ / / \ \ / / \ \ / / \ \ / / \
+`-'   `-`-'   `-`-'   `-`-'   `-`-'   `-`-'   `-`-'   `-`-'
+
+		      AutomARt Run Complete!
+
+  .-.-.   .-.-.   .-.-.   .-.-.   .-.-.   .-.-.   .-.-.   .-.-
+ / / \ \ / / \ \ / / \ \ / / \ \ / / \ \ / / \ \ / / \ \ / / \
+`-'   `-`-'   `-`-'   `-`-'   `-`-'   `-`-'   `-`-'   `-`-'
+
+EOF

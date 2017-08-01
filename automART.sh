@@ -145,8 +145,8 @@ rm obscores.output
 #Create Final Fasta File
 
 cd $outputdir/GramPositive_Output/Secreted/Final_IDs/
-grep -A1 -f pos_final_mART_IDs.txt $lineonefasta > $outputdir/GramPositive_Output/Secreted/Final_IDs/pos_final_mART_sequences.fasta
-
+grep -A1 -f pos_final_mART_IDs.txt $lineonefasta > $outputdir/GramPositive_Output/Secreted/Final_IDs/temppos_final_mART_sequences.fasta
+egrep -v '^--' $outputdir/GramPositive_Output/Secreted/Final_IDs/temppos_final_mART_sequences.fasta > $outputdir/GramPositive_Output/Secreted/Final_IDs/pos_final_mART_sequences.fasta
 #Create NCBI Links File:
 cat pos_final_mART_IDs.txt | while read line; do echo "https://www.ncbi.nlm.nih.gov/Structure/cdd/wrpsb.cgi?INPUT_TYPE=live&SEQUENCE=$line"; done > NCBI_pos_final_mART_links.txt
 #Create CSV NCBI Links:
@@ -195,7 +195,8 @@ rm obscores.output
 
 #Create Final Fasta File#
 cd $outputdir/GramNegative_Output/Secreted/Final_IDs/
-grep -A1 -f neg_final_mART_IDs.txt $lineonefasta > $outputdir/GramNegative_Output/Secreted/Final_IDs/neg_final_mART_sequences.fasta
+grep -A1 -f neg_final_mART_IDs.txt $lineonefasta > $outputdir/GramNegative_Output/Secreted/Final_IDs/tempneg_final_mART_sequences.fasta
+egrep -v '^--'$outputdir/GramNegative_Output/Secreted/Final_IDs/neg_final_mART_sequences.fasta > $outputdir/GramNegative_Output/Secreted/Final_IDs/neg_final_mART_sequences.fasta
 
 #Create NCBI Links File:
 cat neg_final_mART_IDs.txt | while read line; do echo "https://www.ncbi.nlm.nih.gov/Structure/cdd/wrpsb.cgi?INPUT_TYPE=live&SEQUENCE=$line"; done > NCBI_neg_final_mART_links.txt
@@ -224,8 +225,8 @@ rm $outputdir/GramPositive_Output/Secreted/Final_IDs/grampositive_secreted_TMHMM
 rm $outputdir/GramNegative_Output/Secreted/Final_IDs/gramnegative_secreted_TMHMM_IDS.fasta
 rm $outputdir/GramPositive_Output/Secreted/secreted_IDs.output
 rm $outputdir/GramNegative_Output/Secreted/secreted_IDs.output
-
-
+rm $outputdir/GramNegative_Output/Secreted/Final_IDs/tempneg_final_mART_sequences.fasta
+rm $outputdir/GramPositive_Output/Secreted/Final_IDs/temppos_final_mART_sequences.fasta
 
 ################################################################################
 				#Create Final Report#

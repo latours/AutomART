@@ -41,21 +41,21 @@ EOF
 
 if [ $# -ne 2 ]
   then
-    echo "ERROR MESSAGE:\nPlease ensure that the full paths for the directories are provided to AutomART and in the correct order:\n(1) Directory of FASTA files \n(2) Output Directory\nNOTE: See README for a more detailed explanation on how to run AutomART"
+    echo -e "ERROR MESSAGE:\nPlease ensure that the full paths for the directories are provided to AutomART and in the correct order:\n(1) Directory of FASTA files \n(2) Output Directory\nNOTE: See README for a more detailed explanation on how to run AutomART"
 	exit 1
 fi
 
-echo "Checking if Input directory is valid..."
+echo -e "Checking if Input directory is valid..."
 if   [ -d "${inputdir}" ]
-then echo "✓"
-else echo "Input is not a valid directory... exiting AutomART now\n";
+then echo -e "✓"
+else echo -e "Input is not a valid directory... exiting AutomART now\n";
      exit 1
 fi
 
-echo "Checking if Output directory is valid..."
+echo -e "Checking if Output directory is valid..."
 if   [ -d "${outputdir}" ]
-then echo "✓\nRunning AutomART...\n"
-else echo "Output is not a valid directory... exiting AutomART now\n";
+then echo -e "✓\nRunning AutomART...\n"
+else echo -e "Output is not a valid directory... exiting AutomART now\n";
      exit 1
 fi
 
@@ -79,15 +79,15 @@ rm -Rf $outputdir/GramNegative_Output/Not_Secreted; mkdir -p $outputdir/GramNega
 
 ##ID Count:
 
-echo "Sequences Detected from FASTA Directory:"
+echo -e "Sequences Detected from FASTA Directory:"
 orgcount=$(grep ">" -R $inputdir/ | wc -l)
-echo "$orgcount\n"
+echo -e "$orgcount\n"
 cd $inputdir
-echo "Now Processing FASTA files...\n"
+echo -e "Now Processing FASTA files...\n"
 
 
 ## Make Fasta files into one line & Sort on mART motif:
-echo "Now filtering sequences for mART template...\nNote:This step takes some time.\n"
+echo -e "Now filtering sequences for mART template...\nNote:This step takes some time.\n"
 for file in *.fasta #only selects fasta files
 do
 sed -e 's/\(^>.*$\)/#\1#/' $file | tr -d "\n" | sed -e 's/$/#/' | tr "#" "\n" | sed -e '/^$/d' | egrep -B1 '[YFL]R.{27,60}[YF].ST[SQT].{32,78}[QE].E' | egrep -v '^--' >> $outputdir/new.fasta
@@ -99,7 +99,7 @@ seq_template=$(wc -l $lineonefasta)
 ################################GRAM[+]TESTING##################################
 ################################################################################
 
-echo  "Now Processing SignalP (Gram +)...\n"
+echo -e "Now Processing SignalP (Gram +)...\n"
 
 $signalp -t gram+ -f short $lineonefasta > $outputdir/GramPositive_Output/signalp_pos.short_out 
 
@@ -122,7 +122,7 @@ grep -A1 -f Secreted/pos_secreted_IDs.output $lineonefasta > Secreted/grampositi
 
 #TMHMM
 
-echo "Now running TMHMM for Gram Positive Secreted Sequences...\n"
+echo -e "Now running TMHMM for Gram Positive Secreted Sequences...\n"
 $tmhmm Secreted/grampositive_secreted.fasta > Secreted/Final_IDs/TMHMM_grampositive_secreted.output #All gram + secreted sequences processed by TMHMM
 grep "Number of predicted TMHs:" Secreted/Final_IDs/TMHMM_grampositive_secreted.output > Secreted/Final_IDs/temp.output #search for line with just the predicted number of TM domains
 awk -F " " '{if ($7==0)print $2}' Secreted/Final_IDs/temp.output > Secreted/Final_IDs/grampositive_secreted_TMHMM_IDS.output
@@ -132,7 +132,7 @@ grep -A1 -f Secreted/Final_IDs/grampositive_secreted_TMHMM_IDS.output $lineonefa
 
 #OB-SCORE
 
-echo "Now running OB-Score for Gram Positive Secreted Sequences containing no Transmembrane Domains...\n"
+echo -e "Now running OB-Score for Gram Positive Secreted Sequences containing no Transmembrane Domains...\n"
 cp Secreted/Final_IDs/grampositive_secreted_TMHMM_IDS.fasta $ob
 cd $ob
 perl OB.pl -i grampositive_secreted_TMHMM_IDS.fasta -o obscores.output -n -p Hydrophobicity_scores.dat -m zmat.dat
@@ -155,7 +155,7 @@ cat pos_final_mART_IDs.txt | while read line; do echo "https://www.ncbi.nlm.nih.
 ################################GRAM[-]TESTING##################################
 ################################################################################
 
-echo  "Now Processing SignalP (Gram -)...\n"
+echo -e "Now Processing SignalP (Gram -)...\n"
 $signalp -t gram- -f short $lineonefasta > $outputdir/GramNegative_Output/signalp_neg.short_out 
 
 #SignalP
@@ -174,7 +174,7 @@ gramneg_secreted=$(wc -l $outputdir/GramNegative_Output/Secreted/neg_secreted_ID
 grep -A1 -f Secreted/neg_secreted_IDs.output $lineonefasta > Secreted/gramnegative_secreted.fasta
 
 #TMHMM#
-echo "Now running TMHMM for Gram Negative Secreted Sequences...\n"
+echo -e "Now running TMHMM for Gram Negative Secreted Sequences...\n"
 $tmhmm Secreted/gramnegative_secreted.fasta > Secreted/Final_IDs/TMHMM_gramnegative_secreted.output #All gram - secreted sequences processed by TMHMM
 grep "Number of predicted TMHs:" Secreted/Final_IDs/TMHMM_gramnegative_secreted.output > Secreted/Final_IDs/temp.output #search for line with just the predicted number of TM domains
 awk -F " " '{if ($7==0)print $2}' Secreted/Final_IDs/temp.output > Secreted/Final_IDs/gramnegative_secreted_TMHMM_IDS.output 
@@ -183,7 +183,7 @@ rm Secreted/Final_IDs/temp.output
 grep -A1 -f Secreted/Final_IDs/gramnegative_secreted_TMHMM_IDS.output $lineonefasta > Secreted/Final_IDs/gramnegative_secreted_TMHMM_IDS.fasta
 
 #OB-SCORE#
-echo "Now running OB-Score for Gram Negative Secreted Sequences containing no Transmembrane Domains...\n"
+echo -e "Now running OB-Score for Gram Negative Secreted Sequences containing no Transmembrane Domains...\n"
 cp Secreted/Final_IDs/gramnegative_secreted_TMHMM_IDS.fasta $ob
 cd $ob
 perl OB.pl -i gramnegative_secreted_TMHMM_IDS.fasta -o obscores.output -n -p Hydrophobicity_scores.dat -m zmat.dat
@@ -206,7 +206,7 @@ cat neg_final_mART_IDs.txt | while read line; do echo "https://www.ncbi.nlm.nih.
 ################################################################################
 				#REMOVE TEMP FILES#
 ################################################################################
-echo "Removing temporary files..."
+echo -e "Removing temporary files..."
 cd $outputdir
 rm new.fasta
 cd $outputdir/GramPositive_Output/
@@ -232,23 +232,23 @@ rm $outputdir/GramPositive_Output/Secreted/Final_IDs/temppos_final_mART_sequence
 ################################################################################
 				#Create Final Report#
 ################################################################################
-echo "Creating final report..."
+echo -e "Creating final report..."
 cd $outputdir
 touch Final_Report.txt
-echo "Number of Sequences Submitted to AutomART:$orgcount" > Final_Report.txt
-echo "AutomART Results:" >> Final_Report.txt
-echo "-----------------------------------------------\n" >> Final_Report.txt
-echo "Number of Sequences that passed the mART sequence template:$seq_template">> Final_Report.txt
-echo "Gram Positive # of Secreted IDs:$grampos_secreted" >> Final_Report.txt
-echo "Gram Positive # of IDs Not Classically Secreted:$grampos_not_secreted" >> Final_Report.txt
-echo "Gram Negative # of Secreted IDs:$gramneg_secreted" >> Final_Report.txt
-echo "Gram Negative # of IDs Not Classically Secreted:$gramneg_not_secreted" >> Final_Report.txt
-echo "Gram Positive # of Secreted IDs without TM Domains:$grampos_tmhmm" >> Final_Report.txt
-echo "Gram Negative # of Secreted IDs without TM Domains:$gramneg_tmhmm" >> Final_Report.txt
-echo "Gram Positive # of Final IDs:$pos_finalcount" >> Final_Report.txt
-echo "\nGram Negative # of Final IDs:$neg_finalcount" >> Final_Report.txt
+echo -e "Number of Sequences Submitted to AutomART:$orgcount" > Final_Report.txt
+echo -e "AutomART Results:" >> Final_Report.txt
+echo -e "-----------------------------------------------\n" >> Final_Report.txt
+echo -e "Number of Sequences that passed the mART sequence template:$seq_template">> Final_Report.txt
+echo -e "Gram Positive # of Secreted IDs:$grampos_secreted" >> Final_Report.txt
+echo -e "Gram Positive # of IDs Not Classically Secreted:$grampos_not_secreted" >> Final_Report.txt
+echo -e "Gram Negative # of Secreted IDs:$gramneg_secreted" >> Final_Report.txt
+echo -e "Gram Negative # of IDs Not Classically Secreted:$gramneg_not_secreted" >> Final_Report.txt
+echo -e "Gram Positive # of Secreted IDs without TM Domains:$grampos_tmhmm" >> Final_Report.txt
+echo -e "Gram Negative # of Secreted IDs without TM Domains:$gramneg_tmhmm" >> Final_Report.txt
+echo -e "Gram Positive # of Final IDs:$pos_finalcount" >> Final_Report.txt
+echo -e "\nGram Negative # of Final IDs:$neg_finalcount" >> Final_Report.txt
 
-echo "Final report created sucessfully!"
+echo -e "Final report created sucessfully!"
 
 cat << "EOF"
 

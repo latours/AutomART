@@ -135,7 +135,7 @@ grep -A1 -f Secreted/Final_IDs/grampositive_secreted_TMHMM_IDS.output $lineonefa
 echo "Now running OB-Score for Gram Positive Secreted Sequences containing no Transmembrane Domains...\n"
 cp Secreted/Final_IDs/grampositive_secreted_TMHMM_IDS.fasta $ob
 cd $ob
-perl OB.pl -i grampositive_secreted_TMHMM_IDS.fasta -o obscores.output -n -p /home/latours/Documents/BINF6999/OB/Hydrophobicity_scores.dat -m /home/latours/Documents/BINF6999/OB/zmat.dat
+perl OB.pl -i grampositive_secreted_TMHMM_IDS.fasta -o obscores.output -n -p Hydrophobicity_scores.dat -m zmat.dat
 cp obscores.output $outputdir/GramPositive_Output/Secreted/Final_IDs/
 cd $outputdir/GramPositive_Output/Secreted/Final_IDs/
 awk '$2>=1.5' obscores.output | cut -f1  > pos_final_mART_IDs.txt
@@ -186,7 +186,7 @@ grep -A1 -f Secreted/Final_IDs/gramnegative_secreted_TMHMM_IDS.output $lineonefa
 echo "Now running OB-Score for Gram Negative Secreted Sequences containing no Transmembrane Domains...\n"
 cp Secreted/Final_IDs/gramnegative_secreted_TMHMM_IDS.fasta $ob
 cd $ob
-perl OB.pl -i gramnegative_secreted_TMHMM_IDS.fasta -o obscores.output -n -p /home/latours/Documents/BINF6999/OB/Hydrophobicity_scores.dat -m /home/latours/Documents/BINF6999/OB/zmat.dat
+perl OB.pl -i gramnegative_secreted_TMHMM_IDS.fasta -o obscores.output -n -p Hydrophobicity_scores.dat -m zmat.dat
 cp obscores.output $outputdir/GramNegative_Output/Secreted/Final_IDs/
 cd $outputdir/GramNegative_Output/Secreted/Final_IDs/
 awk '$2>=1.5' obscores.output | cut -f1 > neg_final_mART_IDs.txt

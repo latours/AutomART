@@ -206,6 +206,7 @@ cat neg_final_mART_IDs.txt | while read line; do echo "https://www.ncbi.nlm.nih.
 ################################################################################
 				#REMOVE TEMP FILES#
 ################################################################################
+echo "Removing temporary files..."
 cd $outputdir
 rm new.fasta
 cd $outputdir/GramPositive_Output/
@@ -231,6 +232,7 @@ rm $outputdir/GramPositive_Output/Secreted/Final_IDs/temppos_final_mART_sequence
 ################################################################################
 				#Create Final Report#
 ################################################################################
+echo "Creating final report..."
 cd $outputdir
 touch Final_Report.txt
 echo "Number of Sequences Submitted to AutomART:$orgcount" > Final_Report.txt
@@ -245,6 +247,8 @@ echo "Gram Positive # of Secreted IDs without TM Domains:$grampos_tmhmm" >> Fina
 echo "Gram Negative # of Secreted IDs without TM Domains:$gramneg_tmhmm" >> Final_Report.txt
 echo "Gram Positive # of Final IDs:$pos_finalcount" >> Final_Report.txt
 echo "\nGram Negative # of Final IDs:$neg_finalcount" >> Final_Report.txt
+
+echo "Final report created sucessfully!"
 
 cat << "EOF"
 

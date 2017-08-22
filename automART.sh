@@ -1,7 +1,7 @@
 #!/bin/bash
 ###CREATOR: SARA LATOUR
 ###CONTACT: saralatour@outlook.com
-###UPDATED:22/08/17
+###UPDATED:31/07/17
 ################################################################################
 ################################CUSTOMIZATION###################################
 
@@ -124,14 +124,13 @@ egrep -A1 -f Secreted/pos_secreted_IDs.output $lineonefasta > Secreted/gramposit
 
 echo -e "Now running TMHMM for Gram Positive Secreted Sequences...\n"
 $tmhmm Secreted/grampositive_secreted.fasta > Secreted/Final_IDs/TMHMM_grampositive_secreted.output #All gram + secreted sequences processed by TMHMM
-grep "Number of predicted TMHs:" Secreted/Final_IDs/TMHMM_grampositive_secreted.output > Secreted/Final_IDs/temp.output #search for line with just the predicted number of TM domains
+egrep "Number of predicted TMHs:" Secreted/Final_IDs/TMHMM_grampositive_secreted.output > Secreted/Final_IDs/temp.output #search for line with just the predicted number of TM domains
 awk -F " " '{if ($7==0)print $2}' Secreted/Final_IDs/temp.output > Secreted/Final_IDs/grampositive_secreted_TMHMM_IDS.output
 grampos_tmhmm=$(wc -l $outputdir/GramPositive_Output/Secreted/Final_IDs/grampositive_secreted_TMHMM_IDS.output)
 rm Secreted/Final_IDs/temp.output #remove
 egrep -A1 -f Secreted/Final_IDs/grampositive_secreted_TMHMM_IDS.output $lineonefasta > Secreted/Final_IDs/grampositive_secreted_TMHMM_IDS.fasta #This gets the corresponding sequences to all IDs with no TM domains that are secreted and gram positive
 
 #OB-SCORE
-
 echo -e "Now running OB-Score for Gram Positive Secreted Sequences containing no Transmembrane Domains...\n"
 cp Secreted/Final_IDs/grampositive_secreted_TMHMM_IDS.fasta $ob
 cd $ob
@@ -145,7 +144,7 @@ rm obscores.output
 #Create Final Fasta File
 
 cd $outputdir/GramPositive_Output/Secreted/Final_IDs/
-grep -A1 -f pos_final_mART_IDs.txt $lineonefasta > $outputdir/GramPositive_Output/Secreted/Final_IDs/temppos_final_mART_sequences.fasta
+egrep -A1 -f pos_final_mART_IDs.txt $lineonefasta > $outputdir/GramPositive_Output/Secreted/Final_IDs/temppos_final_mART_sequences.fasta
 egrep -v '^--' $outputdir/GramPositive_Output/Secreted/Final_IDs/temppos_final_mART_sequences.fasta > $outputdir/GramPositive_Output/Secreted/Final_IDs/pos_final_mART_sequences.fasta
 #Create NCBI Links File:
 cat pos_final_mART_IDs.txt | while read line; do echo "https://www.ncbi.nlm.nih.gov/Structure/cdd/wrpsb.cgi?INPUT_TYPE=live&SEQUENCE=$line"; done > NCBI_pos_final_mART_links.txt
@@ -173,35 +172,38 @@ sort Secreted/secreted_IDs.output | uniq > Secreted/neg_secreted_IDs.output
 gramneg_secreted=$(wc -l $outputdir/GramNegative_Output/Secreted/neg_secreted_IDs.output)
 egrep -A1 -f Secreted/neg_secreted_IDs.output $lineonefasta > Secreted/gramnegative_secreted.fasta
 
-#TMHMM#
+#TMHMM
+
 echo -e "Now running TMHMM for Gram Negative Secreted Sequences...\n"
 $tmhmm Secreted/gramnegative_secreted.fasta > Secreted/Final_IDs/TMHMM_gramnegative_secreted.output #All gram - secreted sequences processed by TMHMM
-grep "Number of predicted TMHs:" Secreted/Final_IDs/TMHMM_gramnegative_secreted.output > Secreted/Final_IDs/temp.output #search for line with just the predicted number of TM domains
+egrep "Number of predicted TMHs:" Secreted/Final_IDs/TMHMM_gramnegative_secreted.output > Secreted/Final_IDs/temp.output #search for line with just the predicted number of TM domains
 awk -F " " '{if ($7==0)print $2}' Secreted/Final_IDs/temp.output > Secreted/Final_IDs/gramnegative_secreted_TMHMM_IDS.output
 gramneg_tmhmm=$(wc -l $outputdir/GramNegative_Output/Secreted/Final_IDs/gramnegative_secreted_TMHMM_IDS.output)
-rm Secreted/Final_IDs/temp.output
-egrep -A1 -f Secreted/Final_IDs/gramnegative_secreted_TMHMM_IDS.output $lineonefasta > Secreted/Final_IDs/gramnegative_secreted_TMHMM_IDS.fasta
+rm Secreted/Final_IDs/temp.output #remove
+egrep -A1 -f Secreted/Final_IDs/gramnegative_secreted_TMHMM_IDS.output $lineonefasta > Secreted/Final_IDs/gramnegative_secreted_TMHMM_IDS.fasta #This gets the corresponding sequences to all IDs with no TM domains that are secreted and gram negative
 
-#OB-SCORE#
+#OB-SCORE
 echo -e "Now running OB-Score for Gram Negative Secreted Sequences containing no Transmembrane Domains...\n"
 cp Secreted/Final_IDs/gramnegative_secreted_TMHMM_IDS.fasta $ob
 cd $ob
 perl OB.pl -i gramnegative_secreted_TMHMM_IDS.fasta -o obscores.output -n -p Hydrophobicity_scores.dat -m zmat.dat
 cp obscores.output $outputdir/GramNegative_Output/Secreted/Final_IDs/
 cd $outputdir/GramNegative_Output/Secreted/Final_IDs/
-awk '$2>=1.5' obscores.output | cut -f1 > neg_final_mART_IDs.txt
+awk '$2>=1.5' obscores.output | cut -f1  > neg_final_mART_IDs.txt
 neg_finalcount=$(wc -l neg_final_mART_IDs.txt)
 rm obscores.output
 
-#Create Final Fasta File#
-cd $outputdir/GramNegative_Output/Secreted/Final_IDs/
-grep -A1 -f neg_final_mART_IDs.txt $lineonefasta > $outputdir/GramNegative_Output/Secreted/Final_IDs/tempneg_final_mART_sequences.fasta
-egrep -v '^--'$outputdir/GramNegative_Output/Secreted/Final_IDs/neg_final_mART_sequences.fasta > $outputdir/GramNegative_Output/Secreted/Final_IDs/neg_final_mART_sequences.fasta
+#Create Final Fasta File
+echo -e "Creating final fasta file!"
 
+cd $outputdir/GramNegative_Output/Secreted/Final_IDs/
+egrep -A1 -f neg_final_mART_IDs.txt $lineonefasta > $outputdir/GramNegative_Output/Secreted/Final_IDs/tempneg_final_mART_sequences.fasta
+egrep -v '^--' $outputdir/GramNegative_Output/Secreted/Final_IDs/tempneg_final_mART_sequences.fasta > $outputdir/GramNegative_Output/Secreted/Final_IDs/neg_final_mART_sequences.fasta
 #Create NCBI Links File:
 cat neg_final_mART_IDs.txt | while read line; do echo "https://www.ncbi.nlm.nih.gov/Structure/cdd/wrpsb.cgi?INPUT_TYPE=live&SEQUENCE=$line"; done > NCBI_neg_final_mART_links.txt
 #Create CSV NCBI Links:
 cat neg_final_mART_IDs.txt | while read line; do echo "https://www.ncbi.nlm.nih.gov/Structure/cdd/wrpsb.cgi?INPUT_TYPE=live&SEQUENCE=$line"; done > NCBI_neg_final_mART_links.csv
+
 
 ################################################################################
 				#REMOVE TEMP FILES#

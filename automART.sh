@@ -7,11 +7,11 @@
 
 #####               Please Customize Program Pathways:                     #####
 #### Path to signalp command:
-signalp=/home/latours/Documents/BINF6999/signalp-4.1/signalp
+signalp=/home/latours/Auto_mART/signalp-4.1/signalp
 #### Path to TMHMM command:
-tmhmm=/home/latours/Documents/BINF6999/tmhmm-2.0c/bin/tmhmm
+tmhmm=/home/latours/Auto_mART/tmhmm-2.0c/bin/tmhmm
 #### OB-Score Directory (Full Directory not command):
-ob=/home/latours/Documents/BINF6999/OB/
+ob=/home/latours/Auto_mART/OB/
 
 
 
@@ -101,7 +101,7 @@ seq_template=$(wc -l $lineonefasta)
 
 echo -e "Now Processing SignalP (Gram +)...\n"
 
-$signalp -t gram+ -f short $lineonefasta > $outputdir/GramPositive_Output/signalp_pos.short_out 
+$signalp -t gram+ -f short $lineonefasta > $outputdir/GramPositive_Output/signalp_pos.short_out
 
 #SignalP
 
@@ -110,14 +110,14 @@ cd $outputdir/GramPositive_Output/ #move to Gram Positive Directory
 for file in *.short_out #for every signalp file do the following:
 do
 head -n2 "$file" | tail -n1 > Secreted/temp_"$file".output
-tail -n+2 "$file" | awk -F" " '{if ($10=="Y") print $1}' >> Secreted/secreted_IDs.output 
+tail -n+2 "$file" | awk -F" " '{if ($10=="Y") print $1}' >> Secreted/secreted_IDs.output
 tail -n+2 "$file" | awk -F" " '{if ($10=="N") print $1}' >> Not_Secreted/not_secreted_IDs.output #keep (All no from signal p = not secreted)
 done
 grampos_not_secreted=$(wc -l $outputdir/GramPositive_Output/Not_Secreted/not_secreted_IDs.output)
 rm Secreted/temp_"$file".output
 sort Secreted/secreted_IDs.output | uniq > Secreted/pos_secreted_IDs.output
 grampos_secreted=$(wc -l $outputdir/GramPositive_Output/Secreted/pos_secreted_IDs.output)
-grep -A1 -f Secreted/pos_secreted_IDs.output $lineonefasta > Secreted/grampositive_secreted.fasta #grep for all the secreted IDs to find their corresponding fasta sequence and save to file with all gram positive and secreted sequences.
+egrep -A1 -f Secreted/pos_secreted_IDs.output $lineonefasta > Secreted/grampositive_secreted.fasta #grep for all the secreted IDs to find their corresponding fasta sequence and save to file with all gram positive and secreted sequences.
 
 
 #TMHMM
@@ -128,7 +128,7 @@ grep "Number of predicted TMHs:" Secreted/Final_IDs/TMHMM_grampositive_secreted.
 awk -F " " '{if ($7==0)print $2}' Secreted/Final_IDs/temp.output > Secreted/Final_IDs/grampositive_secreted_TMHMM_IDS.output
 grampos_tmhmm=$(wc -l $outputdir/GramPositive_Output/Secreted/Final_IDs/grampositive_secreted_TMHMM_IDS.output)
 rm Secreted/Final_IDs/temp.output #remove
-grep -A1 -f Secreted/Final_IDs/grampositive_secreted_TMHMM_IDS.output $lineonefasta > Secreted/Final_IDs/grampositive_secreted_TMHMM_IDS.fasta #This gets the corresponding sequences to all IDs with no TM domains that are secreted and gram positive
+egrep -A1 -f Secreted/Final_IDs/grampositive_secreted_TMHMM_IDS.output $lineonefasta > Secreted/Final_IDs/grampositive_secreted_TMHMM_IDS.fasta #This gets the corresponding sequences to all IDs with no TM domains that are secreted and gram positive
 
 #OB-SCORE
 
@@ -140,7 +140,7 @@ cp obscores.output $outputdir/GramPositive_Output/Secreted/Final_IDs/
 cd $outputdir/GramPositive_Output/Secreted/Final_IDs/
 awk '$2>=1.5' obscores.output | cut -f1  > pos_final_mART_IDs.txt
 pos_finalcount=$(wc -l pos_final_mART_IDs.txt)
-rm obscores.output 
+rm obscores.output
 
 #Create Final Fasta File
 
@@ -156,7 +156,7 @@ cat pos_final_mART_IDs.txt | while read line; do echo "https://www.ncbi.nlm.nih.
 ################################################################################
 
 echo -e "Now Processing SignalP (Gram -)...\n"
-$signalp -t gram- -f short $lineonefasta > $outputdir/GramNegative_Output/signalp_neg.short_out 
+$signalp -t gram- -f short $lineonefasta > $outputdir/GramNegative_Output/signalp_neg.short_out
 
 #SignalP
 cd $outputdir/GramNegative_Output/ #move to Gram Negative Directory
@@ -171,16 +171,16 @@ gramneg_not_secreted=$(wc -l $outputdir/GramNegative_Output/Not_Secreted/not_sec
 rm Secreted/temp_"$file".output
 sort Secreted/secreted_IDs.output | uniq > Secreted/neg_secreted_IDs.output
 gramneg_secreted=$(wc -l $outputdir/GramNegative_Output/Secreted/neg_secreted_IDs.output)
-grep -A1 -f Secreted/neg_secreted_IDs.output $lineonefasta > Secreted/gramnegative_secreted.fasta
+egrep -A1 -f Secreted/neg_secreted_IDs.output $lineonefasta > Secreted/gramnegative_secreted.fasta
 
 #TMHMM#
 echo -e "Now running TMHMM for Gram Negative Secreted Sequences...\n"
 $tmhmm Secreted/gramnegative_secreted.fasta > Secreted/Final_IDs/TMHMM_gramnegative_secreted.output #All gram - secreted sequences processed by TMHMM
 grep "Number of predicted TMHs:" Secreted/Final_IDs/TMHMM_gramnegative_secreted.output > Secreted/Final_IDs/temp.output #search for line with just the predicted number of TM domains
-awk -F " " '{if ($7==0)print $2}' Secreted/Final_IDs/temp.output > Secreted/Final_IDs/gramnegative_secreted_TMHMM_IDS.output 
+awk -F " " '{if ($7==0)print $2}' Secreted/Final_IDs/temp.output > Secreted/Final_IDs/gramnegative_secreted_TMHMM_IDS.output
 gramneg_tmhmm=$(wc -l $outputdir/GramNegative_Output/Secreted/Final_IDs/gramnegative_secreted_TMHMM_IDS.output)
 rm Secreted/Final_IDs/temp.output
-grep -A1 -f Secreted/Final_IDs/gramnegative_secreted_TMHMM_IDS.output $lineonefasta > Secreted/Final_IDs/gramnegative_secreted_TMHMM_IDS.fasta
+egrep -A1 -f Secreted/Final_IDs/gramnegative_secreted_TMHMM_IDS.output $lineonefasta > Secreted/Final_IDs/gramnegative_secreted_TMHMM_IDS.fasta
 
 #OB-SCORE#
 echo -e "Now running OB-Score for Gram Negative Secreted Sequences containing no Transmembrane Domains...\n"
@@ -191,7 +191,7 @@ cp obscores.output $outputdir/GramNegative_Output/Secreted/Final_IDs/
 cd $outputdir/GramNegative_Output/Secreted/Final_IDs/
 awk '$2>=1.5' obscores.output | cut -f1 > neg_final_mART_IDs.txt
 neg_finalcount=$(wc -l neg_final_mART_IDs.txt)
-rm obscores.output 
+rm obscores.output
 
 #Create Final Fasta File#
 cd $outputdir/GramNegative_Output/Secreted/Final_IDs/
@@ -220,9 +220,9 @@ rm $outputdir/GramPositive_Output/Secreted/Final_IDs/grampositive_secreted_TMHMM
 rm $outputdir/GramNegative_Output/Secreted/Final_IDs/gramnegative_secreted_TMHMM_IDS.output
 rm $outputdir/GramPositive_Output/Secreted/grampositive_secreted.fasta
 rm $outputdir/GramNegative_Output/Secreted/gramnegative_secreted.fasta
-rm $outputdir/GramPositive_Output/Secreted/Final_IDs/TMHMM_grampositive_secreted.output 
-rm $outputdir/GramNegative_Output/Secreted/Final_IDs/TMHMM_gramnegative_secreted.output 
-rm $outputdir/GramPositive_Output/Secreted/Final_IDs/grampositive_secreted_TMHMM_IDS.fasta 
+rm $outputdir/GramPositive_Output/Secreted/Final_IDs/TMHMM_grampositive_secreted.output
+rm $outputdir/GramNegative_Output/Secreted/Final_IDs/TMHMM_gramnegative_secreted.output
+rm $outputdir/GramPositive_Output/Secreted/Final_IDs/grampositive_secreted_TMHMM_IDS.fasta
 rm $outputdir/GramNegative_Output/Secreted/Final_IDs/gramnegative_secreted_TMHMM_IDS.fasta
 rm $outputdir/GramPositive_Output/Secreted/secreted_IDs.output
 rm $outputdir/GramNegative_Output/Secreted/secreted_IDs.output

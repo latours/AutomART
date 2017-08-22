@@ -19,9 +19,9 @@ DEPENDANCIES (PRE-INSTALLATION)
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 Local Installation
 1) Linux or UNIX environment
-2) Perl 5.6 or higher
+2) Perl 5.6 or higher and Bioperl
 3) SignalP
-- SignalP is available for download for free for academic users from: http://www.cbs.dtu.dk/cgi-bin/nph-sw_request?	signalp
+- SignalP is available for download for free for academic users from: http://www.cbs.dtu.dk/cgi-bin/nph-sw_request?signalp
 - Please follow SignalP README for installation instructions
 4) TMHMM
 - TMHMM is available for download for free for academic users from: http://www.cbs.dtu.dk/cgi-bin/nph-sw_request?tmhmm

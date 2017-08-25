@@ -8,7 +8,6 @@ CONTENTS OF THIS FILE
 - Installation
 - Configuration
 - Running AutomART
-- Interpreting the results 
 - Acknowledgments/Contact Info
 
 INTRODUCTION TO AUTOmART

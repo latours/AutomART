@@ -80,7 +80,7 @@ Directories Produced:
 
 
 2) GramNegative_Output
-- Description: This directory will contain all fasta and output files pertaining to tests conducted for gram positive organisms
+- Description: This directory will contain all fasta and output files pertaining to tests conducted for gram negative organisms
 
 
 3) Secreted
